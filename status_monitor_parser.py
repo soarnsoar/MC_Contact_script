@@ -31,8 +31,18 @@ class status_monitor_parser:
         self.mcm="https://cms-pdmv.cern.ch/mcm/requests?prepid="+prepid
         self.prepid=prepid
         self.row_info_list=[]
+        self.row_info_list[:] =[]
         self.row_info_list=copy.deepcopy(self.row_info_list)
         self.url_workflow = "https://dmytro.web.cern.ch/dmytro/cmsprodmon/workflows.php?prep_id=task_"+self.prepid
+
+
+    def __del__(self):
+        self.dataset="NEED DATASETNAME"
+        self.mcm=""
+        self.prepid=""
+        self.row_info_list[:]=[]
+        self.url_workflow=""
+        
     def search_by_flag(self,line,name,line_flag, word_flag):
         value=False
         if line_flag in line:
@@ -50,11 +60,14 @@ class status_monitor_parser:
                     for suffix in self.suffix_remove:                                                                                           
                         value=value.replace(suffix,"")
                     value_split=value.split(">")
+
+
+
                     if line_flag=="Primary output": ##To find datasetname
                         this_dataset=value_split[1]
                         this_dataset=this_dataset.split("/")[1]
                         self.dataset=this_dataset
-                        
+
                     value=value_split[0]
                     
         return value
@@ -81,7 +94,19 @@ class status_monitor_parser:
                     row.value=value
                     #print "value="+row.value
                     break
+        if self.dataset=="NEED DATASETNAME":
+            ##From Get directory##
+            temp_file2="_get_dir_html_temp.txt"
+            os.system("rm "+temp_file2+" 2> /dev/null")
+            get_dir_url="https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get/"+self.prepid
+            os.system("wget --no-check-certificate -q -O "+temp_file2+" "+str(get_dir_url))
+            f2 = open(temp_file2,'r')
+            lines2=f2.readlines()
+            for line in lines2:
+                line=line.split("\"dataset_name\": \"")
+                if "dataset_name\": \"" in line:
+                    print line
         os.system("rm "+temp_file)
-
+        f.close()
 
 

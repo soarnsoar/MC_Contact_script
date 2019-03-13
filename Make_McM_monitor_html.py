@@ -38,25 +38,26 @@ def Make_McM_monitor_html(TITLE, TXT):
     for this_request in txtlines:
         
         #prepid="HIG-RunIIFall18wmLHEGS-01330"
-        print "@Add "+this_request
+        print "@@ADD "+this_request
         prepid=this_request
         my_request=status_monitor_parser(prepid)
         my_request.row_info_list=info_list
         
         
         my_request.parse_html()
-        
-        
         this_data=[]
+        this_data[:]=[]
         this_data.append(my_request.prepid)
         this_data.append(my_request.dataset)
         this_data.append(my_request.mcm)
         for info in my_request.row_info_list:
             #my_html.add_data(["a","b","c"])
             #my_html.add_data
+            
             this_data.append(info.value)
         #this_data=copy.deepcopy(this_data)
         my_html.add_data(copy.deepcopy(this_data)) ## add line
+        del my_request
     ###Now all of the lines are added
 
 
@@ -65,5 +66,5 @@ def Make_McM_monitor_html(TITLE, TXT):
 
 
 if __name__ == "__main__":
-    Make_McM_monitor_html("Autumn18_MC_HWW", "request_list/Autumn18_HWW.txt")
+    Make_McM_monitor_html("Autumn18_MC_HWW(Korea_time)", "request_list/Autumn18_HWW_test.txt")
     #Make_McM_monitor_html(TITLE, TXT)

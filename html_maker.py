@@ -25,19 +25,21 @@ class jh_html :
         self.data=copy.deepcopy(self.data)
 
     def add_data(self,data):
-        self.data.append(data)
+        #print "add_data="+str(data)
+        self.data.append(copy.deepcopy(data))
         
     def make(self,outputname):
         self.output=outputname
         
-        os.system("rm "+self.output+" 2> /dev/null")
+        os.system("rm \""+self.output+"\" 2> /dev/null")
         out = open(self.output,'a')
-
-
+        
+        
         title=self.title
         JobStartTime = datetime.datetime.now()
-        timestamp =  JobStartTime.strftime('%Y-%m-%d %H:%M:%S')
 
+        timestamp =  JobStartTime.strftime('%Y-%m-%d %H:%M:%S')
+        
         ###Title of page and design foramt###
         print >>out,'''
         <!DOCTYPE html>
