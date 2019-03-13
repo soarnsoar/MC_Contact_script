@@ -1,3 +1,5 @@
+!!Please note that this code is not that fast.... It take 1sec per 1 request to monitor it LOL!!
+
 How to Use
 
 0) Make txt file containing request list 
