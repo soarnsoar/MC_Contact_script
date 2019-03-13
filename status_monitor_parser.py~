@@ -65,8 +65,8 @@ class status_monitor_parser:
         
         temp_file="_status_html_temp.txt"
         os.system("rm "+temp_file+" 2> /dev/null")
-        
-        os.system("wget -q -O "+temp_file+" "+str(self.url_workflow)  )
+        #os.system("wget -q "+str(self.url_workflow)+" -O "+temp_file  )
+        os.system("wget -O "+temp_file+" "+str(self.url_workflow)  )
         
         f = open(temp_file,'r')
         #print "@readlines"

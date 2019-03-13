@@ -27,8 +27,7 @@ class jh_html :
     def add_data(self,data):
         self.data.append(data)
         
-    def make(self,outputname):
-        self.output=outputname
+    def make(self,outputname=self.output):
         
         os.system("rm "+self.output+" 2> /dev/null")
         out = open(self.output,'a')
