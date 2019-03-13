@@ -103,9 +103,13 @@ class status_monitor_parser:
             f2 = open(temp_file2,'r')
             lines2=f2.readlines()
             for line in lines2:
-                line=line.split("\"dataset_name\": \"")
-                if "dataset_name\": \"" in line:
-                    print line
+                #line=line.split("\"dataset_name\": \"")
+                #if "dataset_name\": \"" in line:
+                #print "@@@@@@"+line
+                #for l in line.split("dataset_name"):
+                 
+                #print "@@@"+l
+                print line.split("dataset_name")[-1]
         os.system("rm "+temp_file)
         f.close()
 
