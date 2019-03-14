@@ -44,6 +44,9 @@ class status_monitor_parser:
         self.url_workflow=""
         
     def search_by_flag(self,line,name,line_flag, word_flag):
+        #print "@@search_by_flag,line"
+        #print line
+        #print "@line_flag="+line_flag
         value=False
         if line_flag in line:
             line_elements = line.split()
@@ -64,6 +67,8 @@ class status_monitor_parser:
 
 
                     if line_flag=="Primary output": ##To find datasetname
+                        #print "@@this_dataset from Primary output@@"
+                        #print value_split
                         this_dataset=value_split[1]
                         this_dataset=this_dataset.split("/")[1]
                         self.dataset=this_dataset
@@ -73,44 +78,55 @@ class status_monitor_parser:
         return value
         
     def parse_html(self):
-        
+        #print "@parse_html@"
         #url = "https://dmytro.web.cern.ch/dmytro/cmsprodmon/workflows.php?prep_id=task_"+campaign+step+"-"+str(request_id)
         
         temp_file="_status_html_temp.txt"
         os.system("rm "+temp_file+" 2> /dev/null")
         
         os.system("wget -q -O "+temp_file+" "+str(self.url_workflow)  )
+        #os.system("wget -O "+temp_file+" "+str(self.url_workflow)  )
         
         f = open(temp_file,'r')
         #print "@readlines"
         lines=f.readlines()
-        #print "@for all line"
-
+        #print "@for all line  of "+self.prepid
+        #print lines
         for line in lines:
-            
+            #print "@"+line
             for row in self.row_info_list:
                 value=self.search_by_flag(line,row.name,row.name,row.word_flag)
                 if value :
                     row.value=value
                     #print "value="+row.value
                     break
+
+
+
+
+
+                
         if self.dataset=="NEED DATASETNAME":
             ##From Get directory##
+            print "@USE GET DIRECTORY@"
             temp_file2="_get_dir_html_temp.txt"
             os.system("rm "+temp_file2+" 2> /dev/null")
             get_dir_url="https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get/"+self.prepid
             os.system("wget --no-check-certificate -q -O "+temp_file2+" "+str(get_dir_url))
             f2 = open(temp_file2,'r')
-            lines2=f2.readlines()
-            for line in lines2:
-                #line=line.split("\"dataset_name\": \"")
-                #if "dataset_name\": \"" in line:
-                #print "@@@@@@"+line
-                #for l in line.split("dataset_name"):
-                 
-                #print "@@@"+l
-                print line.split("dataset_name")[-1]
-        os.system("rm "+temp_file)
+            line=f2.readlines()[-1]
+            #for line in lines2:
+            #print "@@@"+l
+            dataset=line.split("dataset_name")[-1]
+            dataset=dataset.split('"')[2]
+            self.dataset=copy.deepcopy(dataset)
+            #print "@@"+dataset
+            #for l in dataset:
+            #   print "@@"+l
+            f2.close()
+            #os.system("rm "+temp_file2+" 2> /dev/null")
+ 
+        #os.system("rm "+temp_file)
         f.close()
 
 

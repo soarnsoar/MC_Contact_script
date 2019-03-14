@@ -36,15 +36,24 @@ def Make_McM_monitor_html(TITLE, TXT):
     txtlines=f_input.readlines()
 
     for this_request in txtlines:
-        
+
         #prepid="HIG-RunIIFall18wmLHEGS-01330"
         print "@@ADD "+this_request
         prepid=this_request
         my_request=status_monitor_parser(prepid)
-        my_request.row_info_list=info_list
-        
-        
-        my_request.parse_html()
+        my_request.row_info_list=copy.deepcopy(info_list)
+        ntrial=0
+        while [ ntrial < 10 ]:
+
+            try:
+                my_request.parse_html()
+                break
+            except:
+                print "ntrial="+str(ntrial)
+                ntrial+=1
+            if ntrial == 10:
+                print "!!!SKIP!!!   "+this_request
+                continue
         this_data=[]
         this_data[:]=[]
         this_data.append(my_request.prepid)
@@ -61,10 +70,11 @@ def Make_McM_monitor_html(TITLE, TXT):
     ###Now all of the lines are added
 
 
-        
+    
     my_html.make(TITLE+".html")##export 
-
+    f_input.close()
 
 if __name__ == "__main__":
-    Make_McM_monitor_html("Autumn18_MC_HWW(Korea_time)", "request_list/Autumn18_HWW_test.txt")
+    Make_McM_monitor_html("Autumn18_MC_HWW(Korea_time)", "request_list/Autumn18_HWW.txt")
+    #Make_McM_monitor_html("Autumn18_MC_HWW(Korea_time)", "request_list/Autumn18_HWW_test.txt")
     #Make_McM_monitor_html(TITLE, TXT)

@@ -119,3 +119,4 @@ class jh_html :
             print >>out,'''</tr>
             '''
     
+        out.close()

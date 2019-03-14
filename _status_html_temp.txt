@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <style>
+     .google-visualization-table-table *  { font-size:12px; } 
+     .lpc {
+       padding-left:20px;
+     }
+    </style>
+    <script type='text/javascript'>
+     google.load('visualization', '1', {packages:['table']});
+     google.setOnLoadCallback(drawTables);
+     $(document).ready(function() {
+       $('select.dstype').change(function(){
+	 $.ajax({
+	   type: 'POST',
+	   url: 'bin/check.php',
+	   data: {
+	     dstype: $('select.dstype').val(),
+	     mcm_id: $('input[name$="mcm_id"]').val()
+	   }, 
+	   dataType: 'html',
+	   success: function(msg){
+	     if (msg != 'done') alert("Your selection is not stored\n" + msg);
+	     // console.log("msg");
+	   },
+	    error: function(xhr, textStatus, errorThrown) {
+	     alert("Your selection is not stored\n" + errorThrown);
+	    }
+	 });
+       });
+     });
+     function drawTables() {
+       drawWorkflowTable();
+       drawDatasetTable();
+     };
+     function drawWorkflowTable() {
+       var data = new google.visualization.DataTable();
+       data.addColumn('string', 'Workflow name');
+       data.addColumn('number', 'Age (days)');
+       data.addColumn('number', 'Current State (days)');
+       data.addColumn('string', 'PrepId');
+       data.addColumn('string', 'Type');
+       data.addColumn('string', 'ReqManager Status');
+       data.addColumn('string', 'Unified Status');
+       data.addColumn('number', 'Priority');
+       data.addRow(['<div>pdmvserv_task_HIG-RunIIFall18wmLHEGS-01337__v1_T_190313_091313_9394</div> (<a href="https://cmsweb.cern.ch/reqmgr2/fetch?rid=pdmvserv_task_HIG-RunIIFall18wmLHEGS-01337__v1_T_190313_091313_9394">ReqMgr</a>,<a href="https://cmsweb.cern.ch/reqmgr2/data/request?name=pdmvserv_task_HIG-RunIIFall18wmLHEGS-01337__v1_T_190313_091313_9394&mask=OutputDatasets">output</a>,<a href="https://cms-unified.web.cern.ch/cms-unified/report/pdmvserv_task_HIG-RunIIFall18wmLHEGS-01337__v1_T_190313_091313_9394">ErrorReport</a>)',0.7,0.5,'task_HIG-RunIIFall18wmLHEGS-01337','TaskChain','acquired','away',{v:85000,f:'85,000'}]);
+
+       var table = new google.visualization.Table(document.getElementById('wf_table_div'));
+       var options = {
+	 showRowNumber: true, 
+	 allowHtml:true, 
+	 sortColumn:1, 
+	 sortAscending:true
+       }
+
+       table.draw(data, options);
+       var title = document.getElementById('wf_table_title');
+       title.innerHTML = "<h5>Workflows</h5>";
+     }
+     function drawDatasetTable() {
+       var data = new google.visualization.DataTable();
+       data.addColumn('string', 'Dataset name');
+       data.addColumn('string', 'Status');
+       data.addColumn('number', 'Events');
+       data.addColumn('number', 'Size');
+       data.addColumn('string', 'DBS First');
+       data.addColumn('string', 'DBS Last');
+       data.addRow(['<a href="https://cmsweb.cern.ch/das/request?view=list&input=%2FGluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8%2FRunIIAutumn18DRPremix-102X_upgrade2018_realistic_v15-v1%2FAODSIM">/GluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8/RunIIAutumn18DRPremix-102X_upgrade2018_realistic_v15-v1/AODSIM</a>','',0,0,'','']);
+data.addRow(['<a href="https://cmsweb.cern.ch/das/request?view=list&input=%2FGluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8%2FRunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1%2FMINIAODSIM">/GluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM</a>','',0,0,'','']);
+data.addRow(['<a href="https://cmsweb.cern.ch/das/request?view=list&input=%2FGluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8%2FRunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16-v1%2FNANOAODSIM">/GluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8/RunIIAutumn18NanoAODv4-Nano14Dec2018_102X_upgrade2018_realistic_v16-v1/NANOAODSIM</a>','',0,0,'','']);
+																	  
+       var table = new google.visualization.Table(document.getElementById('ds_table_div'));
+       var options = {
+	 showRowNumber: true, 
+	 allowHtml:true, 
+	 sortColumn:2, 
+	 sortAscending:false
+       };
+																	  
+       document.getElementById('ds_table_title').innerHTML="<h5>Outputs</h5>";
+       table.draw(data, options);
+     }
+    </script>
+  </head>
+
+  <body>
+    <div id='overview_div' style="padding: 10px 20px 20px 20px;">
+       <h4>Request: task_HIG-RunIIFall18wmLHEGS-01337</h4>
+<table><tr><td class=lpc>Days since request approval</td><td class=lpc>0.7</td></tr>
+<tr><td class=lpc>Production status</td><td class=lpc>pending</td></tr>
+<tr><td class=lpc>McM status</td><td class=lpc>submitted (<a href="https://cms-pdmv.cern.ch/mcm/requests?prepid=HIG-RunIIFall18wmLHEGS-01337">first request in the chain</a>, <a href="https://cms-pdmv.cern.ch/mcm/chained_requests?contains=HIG-RunIIFall18wmLHEGS-01337">chained requests</a>)</td></tr>
+<tr><td class=lpc>Number of events requested</td><td class=lpc>200,000</td></tr>
+<tr><td class=lpc>Number of events produced</td><td class=lpc>0 (0.0%)</td></tr>
+<tr><td class=lpc>Primary output</td><td class=lpc><a href='https://cmsweb.cern.ch/das/request?view=list&input=%2FGluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8%2FRunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1%2FMINIAODSIM'>/GluGluToWWToTNTN_TuneCP5_13TeV_MCFM701_pythia8/RunIIAutumn18MiniAOD-102X_upgrade2018_realistic_v15-v1/MINIAODSIM</a></td></tr>
+<tr><td class=lpc>Unified</td><td class=lpc><a href='https://cms-unified.web.cern.ch/cms-unified/showlog/?search=task_HIG-RunIIFall18wmLHEGS-01337'>Log</a></td></tr>
+<tr><td class=lpc>JIRA</td><td class=lpc><a href='https://its.cern.ch/jira/issues/?jql=text~task_HIG-RunIIFall18wmLHEGS-01337%20AND%20project%20=%20CMSCOMPPR'>Find tickets</a></td></tr>
+</table>
+      
+    </div>
+    <div id='ds_table_title'></div>
+    <div id='ds_table_div'></div>
+    <div id='wf_table_title'></div>
+    <div id='wf_table_div'></div>
+  </body>
+</html>
