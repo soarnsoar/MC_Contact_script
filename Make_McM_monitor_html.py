@@ -36,7 +36,7 @@ def Make_McM_monitor_html(TITLE, TXT):
     txtlines=f_input.readlines()
 
     for this_request in txtlines:
-
+        if this_request == "" : continue
         #prepid="HIG-RunIIFall18wmLHEGS-01330"
         print "@@ADD "+this_request
         prepid=this_request
@@ -53,7 +53,8 @@ def Make_McM_monitor_html(TITLE, TXT):
                 ntrial+=1
             if ntrial == 10:
                 print "!!!SKIP!!!   "+this_request
-                continue
+                break
+        if ntrial == 10: continue
         this_data=[]
         this_data[:]=[]
         this_data.append(my_request.prepid)
@@ -75,6 +76,7 @@ def Make_McM_monitor_html(TITLE, TXT):
     f_input.close()
 
 if __name__ == "__main__":
+    Make_McM_monitor_html("2016_Legecy_MC_HWW(Korea_time)", "request_list/2016_Legacy_HWW.txt")
     Make_McM_monitor_html("Autumn18_MC_HWW(Korea_time)", "request_list/Autumn18_HWW.txt")
     #Make_McM_monitor_html("Autumn18_MC_HWW(Korea_time)", "request_list/Autumn18_HWW_test.txt")
     #Make_McM_monitor_html(TITLE, TXT)
