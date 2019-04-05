@@ -34,7 +34,7 @@ class status_monitor_parser:
         self.row_info_list[:] =[]
         self.row_info_list=copy.deepcopy(self.row_info_list)
         self.url_workflow = "https://dmytro.web.cern.ch/dmytro/cmsprodmon/workflows.php?prep_id=task_"+self.prepid
-
+        self.url_get_dictionary = "https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get/"+self.prepid
 
     def __del__(self):
         self.dataset="NEED DATASETNAME"
@@ -111,15 +111,46 @@ class status_monitor_parser:
             print "@USE GET DIRECTORY@"
             temp_file2="_get_dir_html_temp.txt"
             os.system("rm "+temp_file2+" 2> /dev/null")
-            get_dir_url="https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get/"+self.prepid
+            #get_dir_url="https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get/"+self.prepid
+            get_dir_url=self.url_get_dictionary
             os.system("wget --no-check-certificate -q -O "+temp_file2+" "+str(get_dir_url))
             f2 = open(temp_file2,'r')
             line=f2.readlines()[-1]
             #for line in lines2:
             #print "@@@"+l
+            ####Take dataset_name###
             dataset=line.split("dataset_name")[-1]
             dataset=dataset.split('"')[2]
             self.dataset=copy.deepcopy(dataset)
+
+
+            '''
+            ###Requested events###
+            total_events=line.split("total_events")[-1]
+            total_events=total_events.split('"')[1]
+            total_events=total_events.strip()
+            total_events=total_events.lstrip(":")
+            total_events=total_events.rstrip(',')
+            total_events=total_events.strip()
+            #print total_events
+
+
+            ###complete_events###
+            completed_events=line.split("completed_events")[-1]
+            completed_events=completed_events.split('"')[1]
+            completed_events=completed_events.strip()
+            completed_events=completed_events.lstrip(":")
+            completed_events=completed_events.rstrip(',')
+            completed_events=completed_events.strip()
+            #            print completed_events
+
+            '''
+            ##Get its root request(1st request of the chain)###
+
+            first_request=line.split('"pdmv_prep_id": "task_')[-1]
+            first_request=first_request.split('"')[0]
+            print first_request
+
             #print "@@"+dataset
             #for l in dataset:
             #   print "@@"+l
