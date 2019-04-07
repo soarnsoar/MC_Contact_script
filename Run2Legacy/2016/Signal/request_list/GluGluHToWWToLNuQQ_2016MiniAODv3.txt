@@ -1,0 +1,7 @@
+"#MiniAODv3 McM"
+"#[Link to Current Status]"
+"HIG-RunIISummer16MiniAODv3-03231"
+"HIG-RunIISummer16MiniAODv3-03233"
+"HIG-RunIISummer16MiniAODv3-03235"
+"HIG-RunIISummer16MiniAODv3-03850"
+"HIG-RunIISummer16MiniAODv3-03851"

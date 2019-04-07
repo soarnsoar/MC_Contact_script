@@ -29,5 +29,5 @@ then you can get Autumn18_MC_HWW.html
 
 
 
-5)By running the script every 10min, you can update the status of requests.
+
 

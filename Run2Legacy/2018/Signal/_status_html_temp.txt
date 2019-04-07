@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type='text/javascript' src='https://www.google.com/jsapi'></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <style>
+     .google-visualization-table-table *  { font-size:12px; } 
+     .lpc {
+       padding-left:20px;
+     }
+    </style>
+    <script type='text/javascript'>
+     google.load('visualization', '1', {packages:['table']});
+     google.setOnLoadCallback(drawTables);
+     $(document).ready(function() {
+       $('select.dstype').change(function(){
+	 $.ajax({
+	   type: 'POST',
+	   url: 'bin/check.php',
+	   data: {
+	     dstype: $('select.dstype').val(),
+	     mcm_id: $('input[name$="mcm_id"]').val()
+	   }, 
+	   dataType: 'html',
+	   success: function(msg){
+	     if (msg != 'done') alert("Your selection is not stored\n" + msg);
+	     // console.log("msg");
+	   },
+	    error: function(xhr, textStatus, errorThrown) {
+	     alert("Your selection is not stored\n" + errorThrown);
+	    }
+	 });
+       });
+     });
+     function drawTables() {
+       drawWorkflowTable();
+       drawDatasetTable();
+     };
+     function drawWorkflowTable() {
+       var data = new google.visualization.DataTable();
+       data.addColumn('string', 'Workflow name');
+       data.addColumn('number', 'Age (days)');
+       data.addColumn('number', 'Current State (days)');
+       data.addColumn('string', 'PrepId');
+       data.addColumn('string', 'Type');
+       data.addColumn('string', 'ReqManager Status');
+       data.addColumn('string', 'Unified Status');
+       data.addColumn('number', 'Priority');
+       
+       var table = new google.visualization.Table(document.getElementById('wf_table_div'));
+       var options = {
+	 showRowNumber: true, 
+	 allowHtml:true, 
+	 sortColumn:1, 
+	 sortAscending:true
+       }
+
+       table.draw(data, options);
+       var title = document.getElementById('wf_table_title');
+       title.innerHTML = "<h5>Workflows</h5>";
+     }
+     function drawDatasetTable() {
+       var data = new google.visualization.DataTable();
+       data.addColumn('string', 'Dataset name');
+       data.addColumn('string', 'Status');
+       data.addColumn('number', 'Events');
+       data.addColumn('number', 'Size');
+       data.addColumn('string', 'DBS First');
+       data.addColumn('string', 'DBS Last');
+       																	  
+       var table = new google.visualization.Table(document.getElementById('ds_table_div'));
+       var options = {
+	 showRowNumber: true, 
+	 allowHtml:true, 
+	 sortColumn:2, 
+	 sortAscending:false
+       };
+																	  
+       document.getElementById('ds_table_title').innerHTML="<h5>Outputs</h5>";
+       table.draw(data, options);
+     }
+    </script>
+  </head>
+
+  <body>
+    <div id='overview_div' style="padding: 10px 20px 20px 20px;">
+       <h4>Request: task_HIG-RunIIAutumn18MiniAOD-01086</h4>
+      
+    </div>
+    <div id='ds_table_title'></div>
+    <div id='ds_table_div'></div>
+    <div id='wf_table_title'></div>
+    <div id='wf_table_div'></div>
+  </body>
+</html>

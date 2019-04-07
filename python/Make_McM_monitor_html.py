@@ -36,7 +36,8 @@ def Make_McM_monitor_html(TITLE, TXT):
     txtlines=f_input.readlines()
 
     for this_request in txtlines:
-        this_request=this_request.strip('"')
+        this_request=this_request.replace('"','')
+        this_request=this_request.strip()
         if this_request == "" : continue
         if this_request.strip().startswith( "#" ) : continue
         #prepid="HIG-RunIIFall18wmLHEGS-01330"
