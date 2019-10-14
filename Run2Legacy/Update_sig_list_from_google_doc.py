@@ -3,14 +3,14 @@ print 'https://docs.google.com/spreadsheets/d/1BG4BaHfPBDlYOVi-BW63sQwdS5WQ2ggZv
 print ' '
 import os
 #https://docs.google.com/spreadsheets/d/1BG4BaHfPBDlYOVi-BW63sQwdS5WQ2ggZv2HWkIk29oU/edit#gid=986135503
-KEY="1BG4BaHfPBDlYOVi-BW63sQwdS5WQ2ggZv2HWkIk29oU"
+KEY="1RlYGSg0BLosRoQumsrPhPvZII2rNic7fTeuPsxFpmE0"
 
 ##Key:Value = sheet_name:Name_for_txt 
 list_sheet={
     "ggH(2l2v)":"GluGluHToWWTo2L2Nu",\
     "VBFH(2l2v)":"VBFHToWWTo2L2Nu",\
     "ggH(lnuqq)":"GluGluHToWWToLNuQQ",\
-    "VBF(lnuqq)":"VBFHToWWToLNuQQ",\
+    "VBFH(lnuqq)":"VBFHToWWToLNuQQ",\
     "VH":"VH",\
     "Other sig":"Other_sig",\
     "Interference":"Interference"
@@ -22,10 +22,13 @@ list_sheet={
 list_YEARFORMAT_RANGE={
     "2016MiniAODv3":"B3:B1000",\
     "2016NanoAODv4":"C3:C1000",\
-    "2017MiniAODv2":"D3:D1000",\
-    "2017NanoAODv4":"E3:E1000",\
-    "2018MiniAOD":"F3:F1000",\
-    "2018NanoAODv4":"G3:G1000",
+    "2016NanoAODv5":"D3:D1000",\
+    "2017MiniAODv2":"E3:E1000",\
+    "2017NanoAODv4":"F3:F1000",\
+    "2017NanoAODv5":"G3:G1000",\
+    "2018MiniAOD":"H3:H1000",\
+    "2018NanoAODv4":"I3:I1000",
+    "2018NanoAODv5":"J3:J1000",
     }
 
 list_YEAR={ '2016', '2017', '2018'   }
@@ -33,6 +36,8 @@ print "==Clean list directory=="
 for year in list_YEAR:
     os.system('rm -rf '+year+'/Signal/request_list')
     os.system('rm -rf  '+year+'/Interference/request_list')
+    os.system('mkdir -p '+year+'/Signal/request_list')
+    os.system('mkdir -p  '+year+'/Interference/request_list')
 for year_format, cell_range in list_YEARFORMAT_RANGE.items():
     for sheet, process in list_sheet.items():
 
