@@ -71,7 +71,7 @@ if ($_GET['noplots']) {
     print "Plots will not be displayed.\n";
 } else {
     $other_exts = array('.pdf', '.cxx', '.eps', '.root', '.txt', '.C');
-    $filenames = glob("*.png")+glob("*.jpg"); sort($filenames);
+    $filenames = glob("*.png")+glob("*.jpg")+glob("*.pdf"); sort($filenames);
     foreach ($filenames as $filename) {
         if (isset($_GET['match']) && !fnmatch('*'.$_GET['match'].'*', $filename)) continue;
         array_push($displayed, $filename);
